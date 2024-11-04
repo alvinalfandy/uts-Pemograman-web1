@@ -376,7 +376,7 @@
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="?page=datatables"><i class="fas fa-table"></i> Datatables</a></li>
-              <li><a class="dropdown-item" href="#"><i class="fas fa-code"></i> Another Action</a></li>
+              <li><a class="dropdown-item" href="?page=form"><i class="fas fa-code"></i> Form</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -393,28 +393,25 @@
   </nav>
 
   <!-- Main Content -->
+
   <div class="container" id="pageContent">
     <?php
     if (isset($_GET['page'])) {
       $page = $_GET['page'];
-      switch ($page) {
-        case 'home':
-          include "home.php";
-          break;
-        case 'about':
-          include "about.php";
-          break;
-        case 'contact':
-          include "contact.php";
-          break;
-        case 'datatables':
-          include "datatables.php";
-          break;
-        default:
-          include "home.php";
+      $valid_pages = ['home', 'about', 'contact', 'datatables', 'form']; // Daftar halaman yang valid
+
+      if (in_array($page, $valid_pages)) {
+        $file = $page . ".php";
+        if (file_exists($file)) {
+          include $file;
+        } else {
+          include "404.php"; // Menggunakan 404.php
+        }
+      } else {
+        include "404.php"; // Redirect ke 404.php untuk page yang tidak valid
       }
     } else {
-      include "home.php";
+      include "home.php"; // Default page
     }
     ?>
   </div>
